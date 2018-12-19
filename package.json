@@ -1,0 +1,22 @@
+{
+  "name": "survaider",
+  "version": "1.0.0",
+  "description": "Survaider Challenge",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --exec babel-node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "NODE",
+    "MONGO",
+    "API"
+  ],
+  "author": "saravyas",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "nodemon": "^1.18.9"
+  }
+}
