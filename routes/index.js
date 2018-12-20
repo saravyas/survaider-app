@@ -13,7 +13,6 @@ router.get("/", (req, res, next) => {
 
 /* GET SINGLE USER BY ID */
 router.get("/:id", (req, res, next) => {
-  console.log(req.params);
   survaiders.findById(req.params.id, (err, peopleDetails) => {
     if (err) return next(err);
     res.json(peopleDetails);
@@ -30,18 +29,46 @@ router.post("/", (req, res, next) => {
 
 /* UPDATE USER */
 router.put("/:id", (req, res, next) => {
-  survaiders.findByIdAndUpdate(req.params.id, req.body, (err, peopleDetails) => {
-    if (err) return next(err);
-    res.json(peopleDetails);
-  });
+  survaiders.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    (err, peopleDetails) => {
+      if (err) return next(err);
+      res.json(peopleDetails);
+    },
+  );
 });
 
 /* DELETE USER */
 router.delete("/:id", (req, res, next) => {
-  survaiders.findByIdAndRemove(req.params.id, req.body, (err, peopleDetails) => {
-    if (err) return next(err);
-    res.json(peopleDetails);
-  });
+  survaiders.findByIdAndRemove(
+    req.params.id,
+    req.body,
+    (err, peopleDetails) => {
+      if (err) return next(err);
+      res.json(peopleDetails);
+    },
+  );
 });
+
+const aggergation = groupByValue => {
+  router.get(`/chart/${groupByValue}`, (req, res, next) => {
+    const agg = [
+      {
+        $group: {
+          _id: `$${groupByValue}`,
+          count: { $sum: 1 },
+        },
+      },
+    ];
+    survaiders.aggregate(agg, (err, peopleChartDetails) => {
+      if (err) return next(err);
+      res.json(peopleChartDetails);
+    });
+  });
+};
+
+aggergation("relationship");
+aggergation("sex");
 
 module.exports = router;
