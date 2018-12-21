@@ -1,0 +1,16 @@
+.tablediv {
+  height: 100%;
+  width: 100%;
+}
+#sexdiv {
+  width: 600px;
+  height: 300px;
+}
+#relationshipdiv {
+  width: 1200px;
+  height: 300px;
+}
+
+.align {
+  text-align: center;
+}

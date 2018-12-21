@@ -1,249 +1,244 @@
 <html>
-
-<head>
+  <head>
     <title>Hackathon</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans|Ubuntu+Condensed' rel='stylesheet'>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans|Ubuntu+Condensed"
+      rel="stylesheet"
+    />
+    <script src="https://www.amcharts.com/lib/4/core.js"></script>
+    <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+    <link rel="stylesheet" href="./libs/style.css" />
+  </head>
 
-</head>
-<style>
-    body {
-        height: 100%;
-        width: 100%;
-    }
-</style>
-
-<body>
-
+  <body>
     <div class="table-responsive" ng-app="pseudoApp" ng-controller="pseudoCtrl">
-        <h1 align="center">People Details</h1>
-        <form>
-            <label>
-                <h2> Based on Your Wish</h2>
-            </label>
-            <div class="form-group">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-4">
+            <h3 class="align">Gender Chart</h3>
+            <div id="sexdiv"></div>
+          </div>
+          <div class="col-sm-8">
+            <h3 class="align">Relationship Chart</h3>
+            <div id="relationshipdiv"></div>
+          </div>
+        </div>
+      </div>
+      <h1 align="center">People Details</h1>
+      <form>
+        <label> <h2>Based on Your Wish</h2> </label>
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search "
+              ng-model="searchValue"
+            />
+          </div>
+        </div>
+      </form>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-4">
+            <form>
+              <label> <h2>Filter Based on Relationship</h2> </label>
+              <div class="form-group">
                 <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-search"></i>
-                    </div>
-                    <input type="text" class="form-control" placeholder="Search " ng-model="searchValue">
+                  <div class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search Relationship"
+                    ng-model="searchlocation.relationship"
+                  />
                 </div>
-            </div>
-        </form>
-        <div class="container-fluid">
-            <div class="row">
-             <div class="col-sm-4">
-                <form>
-                    <label>
-                        <h2>Filter Based on  Relationship</h2>
-                    </label>
-                        <div class="form-group">
-                        <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-search"></i>
-                        </div>
-                            <input type="text" class="form-control" placeholder="Search Relationship" ng-model="searchlocation.relationship">
-                        </div>
-                    </div>
-                </form>
-            </div>
-             <div class="col-sm-4">
-                <form>
-                    <label>
-                            <h2>Filter Based on  Race</h2>
-                    </label>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                    <i class="fa fa-search"></i>
-                            </div>
-                            <input type="text" class="form-control" placeholder="Search Race" ng-model="searchlocation.race">
-                        </div>
-                    </div>
-                  </form>
-             </div>
-             <div class="col-sm-4">        
-                 <form>
-                    <label>
-                        <h2>Filter Based on  Sex</h2>
-                    </label>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-search"></i>
-                            </div>
-                            <input type="text" class="form-control" placeholder="Search Sex" ng-model="searchlocation.sex">
-                        </div>
-                    </div>
-                </form>
-            </div>
-           </div>
-         </div>
-        <table class="table table-bordered table-striped table-hover">
-            <thead>
-                <tr>
-                    <td>
-                        <button class="btn btn-info" ng-click="sort('age')">
-                            Age
-                            <span class="glyphicon sort-icon" ng-show="sortBy=='age'" ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"></span>
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-info" ng-click="sort('workclass')">
-                            WorkClass
-                            <span class="glyphicon sort-icon" ng-show="sortBy=='workclass'" ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"></span>
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-info" ng-click="sort('fnlwgt')">
-                            Final Weight
-                            <span class="glyphicon sort-icon" ng-show="sortBy=='fnlwgt'" ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"></span>
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-info" ng-click="sort('education')">
-                            Education
-                            <span class="glyphicon sort-icon" ng-show="sortBy=='education'" ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"></span>
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-info" ng-click="sort('education-num')">
-                            Education Number
-                            <span class="glyphicon sort-icon" ng-show="sortBy=='education-num'" ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"></span>
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-info" ng-click="sort('marital-status')">
-                            Marital Status
-                            <span class="glyphicon sort-icon" ng-show="sortBy=='marital-status'" ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"></span>
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-info" ng-click="sort('occupation')">
-                            Occupation
-                            <span class="glyphicon sort-icon" ng-show="sortBy=='occupation'" ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"></span>
-                        </button>
-                    </td>
-                    <td>
-                        <button id="result" class="btn btn-info" ng-click="sort('relationship')">
-                             Relationship
-                             <span class="glyphicon sort-icon" ng-show="sortBy=='relationship'" ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"></span>
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-info" ng-click="sort('race')">
-                            Race
-                            <span class="glyphicon sort-icon" ng-show="sortBy=='race'" ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"></span>
+              </div>
+            </form>
+          </div>
+          <div class="col-sm-4">
+            <form>
+              <label> <h2>Filter Based on Race</h2> </label>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search Race"
+                    ng-model="searchlocation.race"
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-sm-4">
+            <form>
+              <label> <h2>Filter Based on Sex</h2> </label>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search Sex"
+                    ng-model="searchlocation.sex"
+                  />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <table class="table table-bordered table-striped table-hover tablediv">
+        <thead>
+          <tr>
+            <td>
+              <button class="btn btn-info" ng-click="sort('age')">
+                Age
+                <span
+                  class="glyphicon sort-icon"
+                  ng-show="sortBy=='age'"
+                  ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"
+                ></span>
+              </button>
+            </td>
+            <td>
+              <button class="btn btn-info" ng-click="sort('workclass')">
+                WorkClass
+                <span
+                  class="glyphicon sort-icon"
+                  ng-show="sortBy=='workclass'"
+                  ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"
+                ></span>
+              </button>
+            </td>
+            <td>
+              <button class="btn btn-info" ng-click="sort('fnlwgt')">
+                Final Weight
+                <span
+                  class="glyphicon sort-icon"
+                  ng-show="sortBy=='fnlwgt'"
+                  ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"
+                ></span>
+              </button>
+            </td>
+            <td>
+              <button class="btn btn-info" ng-click="sort('education')">
+                Education
+                <span
+                  class="glyphicon sort-icon"
+                  ng-show="sortBy=='education'"
+                  ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"
+                ></span>
+              </button>
+            </td>
+            <td><button class="btn btn-info">Education Number</button></td>
+            <td><button class="btn btn-info">Marital Status</button></td>
+            <td>
+              <button class="btn btn-info" ng-click="sort('occupation')">
+                Occupation
+                <span
+                  class="glyphicon sort-icon"
+                  ng-show="sortBy=='occupation'"
+                  ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"
+                ></span>
+              </button>
+            </td>
+            <td>
+              <button
+                id="result"
+                class="btn btn-info"
+                ng-click="sort('relationship')"
+              >
+                Relationship
+                <span
+                  class="glyphicon sort-icon"
+                  ng-show="sortBy=='relationship'"
+                  ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"
+                ></span>
+              </button>
+            </td>
+            <td>
+              <button class="btn btn-info" ng-click="sort('race')">
+                Race
+                <span
+                  class="glyphicon sort-icon"
+                  ng-show="sortBy=='race'"
+                  ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"
+                ></span>
+              </button>
+            </td>
+            <td>
+              <button class="btn btn-info" ng-click="sort('sex')">
+                Sex
+                <span
+                  class="glyphicon sort-icon"
+                  ng-show="sortBy=='sex'"
+                  ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"
+                ></span>
+              </button>
+            </td>
+            <td><button class="btn btn-info">Capital Gain</button></td>
+            <td><button class="btn btn-info">Capital Loss</button></td>
+            <td><button class="btn btn-info">Hours per week"</button></td>
+            <td><button class="btn btn-info">Native Country</button></td>
+            <td><button class="btn btn-info">Prediction Level</button></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            dir-paginate="person in persons  | orderBy:sortBy:sortReverse | filter:searchValue | filter:searchlocation | itemsPerPage:10 "
+          >
+            <td>{{ person.age }}</td>
+            <td>{{ person.workclass }}</td>
+            <td>{{ person.fnlwgt }}</td>
+            <td>{{ person.education }}</td>
+            <td>{{ person["education-num"] }}</td>
+            <td>{{ person["marital-status"] }}</td>
+            <td>{{ person.occupation }}</td>
+            <td>{{ person.relationship }}</td>
+            <td>{{ person.race }}</td>
+            <td>{{ person.sex }}</td>
+            <td>{{ person["capital-gain"] }}</td>
+            <td>{{ person["capital-loss"] }}</td>
+            <td>{{ person["hours-per-week"] }}</td>
+            <td>{{ person["native-country"] }}</td>
+            <td>{{ person["prediction-level"] }}</td>
+          </tr>
+        </tbody>
+        <tbody></tbody>
+      </table>
 
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-info" ng-click="sort('sex')">
-                            Sex
-                            <span class="glyphicon sort-icon" ng-show="sortBy=='sex'" ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"></span>
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-info" ng-click="sort('capital-gain')">
-                            Capital Gain
-                            <span class="glyphicon sort-icon" ng-show="sortBy=='capital-gain'" ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"></span>
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-info" ng-click="sort('capital-loss')">
-                            Capital Loss
-                            <span class="glyphicon sort-icon" ng-show="sortBy=='capital-loss'" ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"></span>
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-info" ng-click="sort('hours-per-week')">
-                            Hours per week"
-                            <span class="glyphicon sort-icon" ng-show="sortBy=='hours-per-week'" ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"></span>
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-info" ng-click="sort('native-country')">
-                            Native Country
-                            <span class="glyphicon sort-icon" ng-show="sortBy=='native-country'" ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"></span>
-                        </button>
-                    </td>
-                    <td>
-                        <button class="btn btn-info" ng-click="sort('prediction-levele')">
-                            Prediction Level
-                            <span class="glyphicon sort-icon" ng-show="sortBy=='prediction-level'" ng-class="{'glyphicon-chevron-up':sortReverse,'glyphicon-chevron-down':!sortReverse}"></span>
-                        </button>
-                    </td>
-                </tr>
-            </thead>          
-            <tbody>
-                <tr dir-paginate="person in persons  | orderBy:sortBy:sortReverse | filter:searchValue | filter:searchlocation | itemsPerPage:10 ">
-                    <td>
-                        {{person.age}}
-                    </td>
-                    <td>
-                        {{person.workclass}}
-                    </td>
-                    <td> 
-                        {{person.fnlwgt}}
-                    </td>
-                    <td>
-                        {{person.education}}
-                    </td>
-                    <td>
-                        {{person['education-num']}}
-                    </td>
-                    <td>
-                        {{person['marital-status']}}
-                    </td>
-                    <td>
-                        {{person.occupation}}
-                    </td>
-                    <td>
-                        {{person.relationship}}
-                    </td>
-                    <td>
-                        {{person.race}}
-                    </td>
-                    <td>
-                        {{person.sex}}
-                    </td>
-                    <td>
-                        {{person['capital-gain']}}
-                    </td>
-                    <td>
-                        {{person['capital-loss']}}
-                    </td>
-                    <td>
-                        {{person['hours-per-week']}}
-                    </td>
-                    <td>
-                        {{person['native-country']}}
-                    </td>
-                    <td>
-                        {{person['prediction-level']}}
-                    </td>
-                </tr>
-            </tbody>
-            <tbody>
-        </table>
-        <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true">
-        </dir-pagination-controls>
+      <dir-pagination-controls
+        max-size="10"
+        direction-links="true"
+        boundary-links="true"
+      >
+      </dir-pagination-controls>
     </div>
 
     <script src="./libs/angular.min.js"></script>
     <script src="https://rawgit.com/michaelbromley/angularUtils-pagination/master/dirPagination.js"></script>
     <script src="./controller/controller.js"></script>
-
-
-
-
-
-
-    </div>
-</body>
-
+  </body>
 </html>
